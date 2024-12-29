@@ -1,19 +1,22 @@
-name: Building Blocks
+name: Check Raspberry Pi Connection
 
 on: push
 
 jobs:
-    echo-hello:
+    make-dir:
         runs-on: ubuntu-latest
         steps:
-            - name: Say hello
-              run: echo "Hello World!"
-    echo-goodbye:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Failed step
+            - name: Setup SSH
               run: |
-                  echo "This will fail"
-                  exit 0
-            - name: Say goodbye
-              run: echo "Goodbye!"
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+
+            - name: Create Directory
+              run: |
+                  ssh -o ProxyCommand="openssl s_client -connect %h:443 -servername %h -quiet" pi@johndoe.telebit.io << 'EOF'
+                    cd ~/apps || exit 1
+                    mkdir remotedir
+                    cd remotedir
+                    touch README.md
+                  EOF
