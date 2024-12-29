@@ -14,7 +14,7 @@ jobs:
 
             - name: Create Directory
               run: |
-                  ssh -o ProxyCommand="openssl s_client -connect %h:443 -servername %h -quiet" shashank@horrible-sheep-48.telebit.io << 'EOF'
+                  ssh -o StrictHostKeyChecking=no shashank@0.tcp.in.ngrok.io -p 10349 << 'EOF'
                     cd ~/apps || exit 1
                     mkdir remotedir
                     cd remotedir
