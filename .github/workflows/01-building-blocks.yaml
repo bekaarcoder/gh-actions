@@ -1,22 +1,19 @@
-name: Check Raspberry Pi Connection
+name: 01 - Building Blocks
 
 on: push
 
 jobs:
-    make-dir:
+    echo-hello:
         runs-on: ubuntu-latest
         steps:
-            - name: Setup SSH
+            - name: Say hello
+              run: echo "Hello, Github!"
+    echo-goodbye:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Failed step
               run: |
-                  mkdir -p ~/.ssh
-                  echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-                  chmod 600 ~/.ssh/id_rsa
-
-            - name: Create Directory
-              run: |
-                  ssh -o StrictHostKeyChecking=no shashank@0.tcp.in.ngrok.io -p 10349 << 'EOF'
-                    cd ~/apps || exit 1
-                    mkdir remotedir
-                    cd remotedir
-                    touch README.md
-                  EOF
+                  echo "I will fail"
+                  exit 1
+            - name: Say goodbye
+              run: echo "Goodbye!"

@@ -1,0 +1,22 @@
+name: Check Raspberry Pi Connection
+
+on: pull_request
+
+jobs:
+    make-dir:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Setup SSH
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+
+            - name: Create Directory
+              run: |
+                  ssh -o StrictHostKeyChecking=no shashank@0.tcp.in.ngrok.io -p 10349 << 'EOF'
+                    cd ~/apps || exit 1
+                    mkdir remotedir
+                    cd remotedir
+                    touch README.md
+                  EOF
