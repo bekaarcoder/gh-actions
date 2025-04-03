@@ -21,3 +21,4 @@ jobs:
             - name: Say goodbye
               run: echo "Goodbye!"
 ```
+### Activity Types and Event Filters
