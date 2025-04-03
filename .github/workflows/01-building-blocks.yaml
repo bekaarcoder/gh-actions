@@ -1,6 +1,7 @@
 name: 01 - Building Blocks
 
-on: push
+# on: push
+on: pull_request
 
 jobs:
     echo-hello:
