@@ -21,3 +21,5 @@ jobs:
             - name: Say goodbye
               run: echo "Goodbye!"
 ```
+
+### Functions
