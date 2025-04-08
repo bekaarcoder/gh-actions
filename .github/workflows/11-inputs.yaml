@@ -34,6 +34,3 @@ jobs:
         steps:
             - name: Deploy
               run: echo "Deploying to ${{inputs.target}}"
-            - name: Print Value
-              run: |
-                  echo "Environment var: ${{vars.TARGET_VAR}}"
