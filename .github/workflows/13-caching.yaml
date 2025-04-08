@@ -17,11 +17,40 @@ on:
                 default: 22.x
 
 jobs:
+    install-deps:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: 04-using-actions/react-app
+        outputs:
+            deps-cache-key: ${{steps.cache-key.outputs.CACHE_KEY}}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{inputs.node-version}}
+            - name: Calculate cache key
+              id: cache-key
+              run: |
+                  echo "CACHE_KEY=deps-node-modules-${{hashFiles('04-using-actions/react-app/package-lock.json')}}" >> "$GITHUB_OUTPUT"
+            - name: Download cached dependencies
+              uses: actions/cache@v4
+              if: ${{inputs.use-cache}}
+              id: cache
+              with:
+                  path: 04-using-actions/react-app/node_modules
+                  key: ${{steps.cache-key.outputs.CACHE_KEY}}
+            - name: Install Dependencies
+              if: steps.cache.outputs.cache-hit != 'true'
+              run: npm ci
     build:
         runs-on: ubuntu-latest
         defaults:
             run:
                 working-directory: 04-using-actions/react-app
+        needs: install-deps
         steps:
             - name: Checkout code
               uses: actions/checkout@v4
@@ -35,10 +64,7 @@ jobs:
               id: cache
               with:
                   path: 04-using-actions/react-app/node_modules
-                  key: deps-node-modules-${{hashFiles('04-using-actions/react-app/package-lock.json')}}
-            - name: Install Dependencies
-              if: steps.cache.outputs.cache-hit != 'true'
-              run: npm ci
+                  key: ${{needs.install-deps.outputs.deps-cache-key}}
             - name: Linting
               run: npm run lint
             - name: Building
