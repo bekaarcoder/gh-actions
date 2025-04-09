@@ -28,7 +28,7 @@ jobs:
             - name: Perform some tests
               run: echo "Running tests on OS ${{matrix.os}} and NodeJS ${{matrix.node-version}}"
     include-example:
-        name: ${{matrix.color}}-${{matrix.shape}}-${{matrix.size}}
+        name: ${{matrix.color}}-${{matrix.shape}}-${{matrix.size}}-${{matrix.opacity}}
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -38,6 +38,7 @@ jobs:
                 include:
                     - color: red
                       shape: triangle
+                    - opacity: 50
         steps:
             - name: Dummy steps
               run: echo ${{matrix.color}}-${{matrix.shape}}-${{matrix.size}}
