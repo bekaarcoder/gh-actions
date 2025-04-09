@@ -41,6 +41,8 @@ jobs:
                     - opacity: 50
                     - color: red
                       opacity: 75
+                exclude:
+                    - opacity: 75
         steps:
             - name: Dummy steps
               run: echo ${{matrix.color}}-${{matrix.shape}}-${{matrix.size}}
