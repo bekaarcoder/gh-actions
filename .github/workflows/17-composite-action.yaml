@@ -1,7 +1,15 @@
 name: 17 - Custom Actions - Composite
+run-name: 17 - Custom Actions - Composite | ${{inputs.target-env}}
 
 on:
     workflow_dispatch:
+        inputs:
+            target-env:
+                description: Which env to target for dependencies installation
+                type: choice
+                options:
+                    - dev
+                    - prod
 
 env:
     working-directory: 04-using-actions/react-app
@@ -19,6 +27,7 @@ jobs:
               with:
                   node-version: 22.x
                   working-dir: ${{env.working-directory}}
+                  target-env: ${{inputs.target-env}}
             - name: Linting
               run: npm run lint
             - name: Building
